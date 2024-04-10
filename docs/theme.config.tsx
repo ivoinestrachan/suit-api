@@ -8,7 +8,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/ivoinestrachan/suit-api',
   footer: {
-    text: 'Nextra Suit Docs',
+    text: 'Nexus Suit Doc',
   },
 }
 
