@@ -5,32 +5,52 @@ import serial
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
+try:
+    left_arm_serial = serial.Serial("/dev/tty.usbmodem1101", 9600, timeout=1)
+    right_arm_serial = serial.Serial("/dev/tty.usbmodem101", 9600, timeout=1)
+except Exception as e:
+    print(f"serial connection failed: {e}")
 
-arduino = serial.Serial("/dev/tty.usbmodem1101", 9600, timeout=1)
 
 @app.route('/')
 def index():
-    return make_response("Everything works", 200)
+    return make_response("suit is up", 200)
 
-@app.route('/send-command/<command>')
-def send_command(command):
+
+@app.route('/left-arm/<command>')
+def send_command_left_arm(command):
     try:
-        arduino.write(command.encode())
-        response_text = "Message sent successfully"
+        left_arm_serial.write(command.encode())
+        response_text = "got request for left arm"
         status_code = 200
     except Exception as e:
-        response_text = f"Error in sending message: {str(e)}"
+        response_text = f"did'nt get message request for left arm: {str(e)}"
         status_code = 500
-
     return make_response(response_text, status_code)
 
 
+@app.route('/right-arm/<command>')
+def send_command_right_arm(command):
+    try:
+        right_arm_serial.write(command.encode())
+        response_text = "got request for right arm"
+        status_code = 200
+    except Exception as e:
+        response_text = f"did'nt get message request for right arm: {str(e)}"
+        status_code = 500
+    return make_response(response_text, status_code)
 
 
 @app.route('/close-serial')
 def close_serial():
-    arduino.close()
-    return "Serial connection closed"
+    try:
+        left_arm_serial.close()
+        right_arm_serial.close()
+        response_text = "serial connection stopped"
+    except Exception as e:
+        response_text = f"issue closing serial connectoin: {str(e)}"
+    return make_response(response_text)
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5002)
