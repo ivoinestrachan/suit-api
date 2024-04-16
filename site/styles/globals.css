@@ -17,6 +17,7 @@
 }
 
 body {
+  cursor: url(../assets/cursor.png), auto;
   overflow: hidden;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -39,3 +40,6 @@ body {
   background-repeat: no-repeat;
   height: 100vh;
 }
+
+
+

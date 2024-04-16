@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 
 try:
-    left_arm_serial = serial.Serial("/dev/tty.usbmodem1101", 9600, timeout=1)
+    left_arm_serial = serial.Serial("/dev/tty.usbmodem11101", 9600, timeout=1)
     right_arm_serial = serial.Serial("/dev/tty.usbmodem101", 9600, timeout=1)
 except Exception as e:
     print(f"serial connection failed: {e}")
