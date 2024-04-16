@@ -102,6 +102,8 @@ const index = () => {
             <div className="flex flex-col items-start">
               <label className="text-black mb-1">Email</label>
               <input
+              type="email"
+              required
                 className="border py-2 px-4 outline-none border-black w-full text-black"
                 placeholder="marsha@toomellow.me"
               />
