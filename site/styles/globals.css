@@ -15,6 +15,25 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+@layer base {
+  @font-face {
+    font-family: 'Motter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(../fonts/Motter.ttf) format('.ttf');
+  }
+}
+
+@layer base {
+  @font-face {
+    font-family: 'Aveline';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(../fonts/Aveline.otf) format('.otf');
+  }
+}
 
 body {
   cursor: url(../assets/cursor.png), auto;

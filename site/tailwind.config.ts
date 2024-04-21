@@ -13,6 +13,14 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      fontFamily: {
+        display: 'Motter, ui-serif', 
+       aveline: 'Aveline, ui-serif'
+      },
+      cursor: {
+        default: 'url(/assets/cursor.png), default',
+        pointer: 'url(/assets/cursor.png), pointer',
+      },
     },
   },
   plugins: [],

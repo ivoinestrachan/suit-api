@@ -3,10 +3,48 @@ import computer from "../assets/computer.svg";
 import icon from "../assets/icon.svg";
 import pfp from "../assets/pfp.svg";
 import xicon from "../assets/xicon.svg";
+import { useState, ChangeEvent, FormEvent } from "react";
+
+interface FormData {
+  name: string;
+  email: string;
+  pricePoint: "OneThousandFiveHundred" | "TwoThousand";
+  favoriteVRGame: string;
+}
 
 const index = () => {
+ const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    pricePoint: "OneThousandFiveHundred",
+    favoriteVRGame: "",
+  });
 
-   
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
 
   return (
     <>
@@ -16,21 +54,22 @@ const index = () => {
         </div>
       </div>
       <div className="site-bg hidden sm:block">
-       
         <div>
-        <a href="https://twitter.com/ivoinetech/status/1773082598161502279" target="_blank">
-          <Image
-            src={xicon}
-            alt="xicon"
-            height={130}
-            width={130}
-            className=" cursor-pointer  absolute mt-10"
-            style={{
-            
-              zIndex: 10,
-            }}
-            draggable="false"
-          />
+          <a
+            href="https://twitter.com/ivoinetech/status/1773082598161502279"
+            target="_blank"
+          >
+            <Image
+              src={xicon}
+              alt="xicon"
+              height={130}
+              width={130}
+              className=" cursor-pointer  absolute mt-10"
+              style={{
+                zIndex: 10,
+              }}
+              draggable="false"
+            />
           </a>
         </div>
         <div
@@ -44,7 +83,9 @@ const index = () => {
           }}
         >
           <div className="flex items-start text-black">
-            <div>Nexus Suit</div>
+            <div className="font-aveline font-bold text-[52px] mt-5">
+              Nexus Suit
+            </div>
           </div>
         </div>
         <div
@@ -71,7 +112,7 @@ const index = () => {
             <div>
               <div className="flex items-center justify-center"></div>
               <div className="flex items-center text-black justify-center gap-2">
-                <div>
+                <div className="font-display">
                   A VR bodysuit designed to enhance game<br></br> immersion by
                   simulating touch and temperature,<br></br> making games feel
                   more realistic and engaging.
@@ -90,10 +131,13 @@ const index = () => {
             top: "5%",
           }}
         >
-          <div className="flex items-center justify-center gap-10">
+                 <div className="flex items-center justify-center gap-10">
             <div className="flex flex-col items-start">
               <label className="text-black mb-1">Name</label>
               <input
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 className="border py-2 px-4 outline-none border-black w-full text-black"
                 placeholder="Marsha Mellow"
               />
@@ -102,8 +146,11 @@ const index = () => {
             <div className="flex flex-col items-start">
               <label className="text-black mb-1">Email</label>
               <input
-              type="email"
-              required
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                type="email"
+                required
                 className="border py-2 px-4 outline-none border-black w-full text-black"
                 placeholder="marsha@toomellow.me"
               />
@@ -116,6 +163,9 @@ const index = () => {
                 Price Point (what you’d pay)
               </label>
               <select
+                name="pricePoint"
+                value={formData.pricePoint}
+                onChange={handleChange}
                 id="price-point"
                 className="border py-2 px-4 outline-none border-black w-full text-black appearance-none bg-white bg-clip-padding bg-no-repeat cursor-pointer"
                 style={{
@@ -124,17 +174,21 @@ const index = () => {
                   backgroundSize: "1.25em 1.25em",
                 }}
               >
-                <option>$500</option>
-                <option>$800</option>
+                <option>$1,500</option>
+                <option>$2,000</option>
               </select>
             </div>
 
             <div className="flex flex-col items-start">
               <label className="text-black mb-1">Favorite VR Games</label>
               <input
+                name="favoriteVRGame"
+                value={formData.favoriteVRGame}
+                onChange={handleChange}
                 className="border py-2 px-4 outline-none border-black w-full text-black"
                 placeholder="VR Chat uwu"
               />
+
             </div>
           </div>
         </div>
@@ -161,7 +215,10 @@ const index = () => {
 
             <div className="bg-[#E5E2CE] h-[12 0px] rounded-[16px] w-[500px] border border-black space-y-2">
               <div className="flex items-center justify-center">
-                <button className="bg-white text-black w-[95%] text-center h-[45px] rounded-[12px] mt-2 font-bold border border-black z-10">
+                <button
+                  className="bg-white text-black w-[95%] text-center h-[45px] rounded-[12px] mt-2 font-bold border border-black z-10"
+                  onClick={handleSubmit}
+                >
                   Join Waitlist
                 </button>
               </div>
