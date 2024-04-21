@@ -3,7 +3,7 @@ import computer from "../assets/computer.svg";
 import icon from "../assets/icon.svg";
 import pfp from "../assets/pfp.svg";
 import xicon from "../assets/xicon.svg";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 
 interface FormData {
   name: string;
@@ -13,16 +13,22 @@ interface FormData {
 }
 
 const index = () => {
- const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     pricePoint: "OneThousandFiveHundred",
     favoriteVRGame: "",
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const [estTime, setEstTime] = useState(2.7528);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -30,6 +36,9 @@ const index = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    setIsComplete(false);
+
     try {
       const response = await fetch("/api/waitlist", {
         method: "POST",
@@ -40,11 +49,23 @@ const index = () => {
       });
       const data = await response.json();
       console.log(data);
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsComplete(true);
+      }, 3000);
     } catch (error) {
       console.error("Error:", error);
+      setIsLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (isComplete) {
+      setTimeout(() => {
+        setIsComplete(false);
+      }, 5000);
+    }
+  }, [isComplete]);
 
   return (
     <>
@@ -131,7 +152,7 @@ const index = () => {
             top: "5%",
           }}
         >
-                 <div className="flex items-center justify-center gap-10">
+          <div className="flex items-center justify-center gap-10">
             <div className="flex flex-col items-start">
               <label className="text-black mb-1">Name</label>
               <input
@@ -188,7 +209,6 @@ const index = () => {
                 className="border py-2 px-4 outline-none border-black w-full text-black"
                 placeholder="VR Chat uwu"
               />
-
             </div>
           </div>
         </div>
@@ -215,12 +235,24 @@ const index = () => {
 
             <div className="bg-[#E5E2CE] h-[12 0px] rounded-[16px] w-[500px] border border-black space-y-2">
               <div className="flex items-center justify-center">
-                <button
-                  className="bg-white text-black w-[95%] text-center h-[45px] rounded-[12px] mt-2 font-bold border border-black z-10"
-                  onClick={handleSubmit}
-                >
-                  Join Waitlist
-                </button>
+              {!isLoading && !isComplete && (
+            <button
+              className="bg-white text-black w-[95%] text-center h-[45px] rounded-[12px] mt-2 font-bold border border-black z-10"
+              onClick={handleSubmit}
+            >
+              Join Waitlist
+            </button>
+          )}
+          {isLoading && (
+            <button  className="bg-white text-black w-[95%] text-center h-[45px] rounded-[12px] mt-2 font-bold border border-black z-10">
+              Loading… est: {estTime.toFixed(2)} hour
+            </button>
+          )}
+          {isComplete && (
+            <button  className="bg-green-500 text-black w-[95%] text-center h-[45px] rounded-[12px] mt-2 font-bold border border-black z-10">
+              You're complete!
+            </button>
+          )}
               </div>
               <div className="flex items-center text-black justify-center gap-2">
                 <div>
