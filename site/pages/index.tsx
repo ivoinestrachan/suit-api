@@ -161,6 +161,7 @@ const index = () => {
                 onChange={handleChange}
                 className="border py-2 px-4 outline-none border-black w-full text-black"
                 placeholder="Marsha Mellow"
+                required
               />
             </div>
 
@@ -188,6 +189,7 @@ const index = () => {
                 value={formData.pricePoint}
                 onChange={handleChange}
                 id="price-point"
+                required
                 className="border py-2 px-4 outline-none border-black w-full text-black appearance-none bg-white bg-clip-padding bg-no-repeat cursor-pointer"
                 style={{
                   backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="none" stroke="%23000" stroke-width="1" d="M6 6l4 4 4-4"/></svg>')`,
@@ -205,6 +207,7 @@ const index = () => {
               <input
                 name="favoriteVRGame"
                 value={formData.favoriteVRGame}
+                required
                 onChange={handleChange}
                 className="border py-2 px-4 outline-none border-black w-full text-black"
                 placeholder="VR Chat uwu"
