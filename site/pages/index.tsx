@@ -23,6 +23,7 @@ const index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [estTime, setEstTime] = useState(2.7528);
+  const [error, setError] = useState('');
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -34,10 +35,12 @@ const index = () => {
     }));
   };
 
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setIsComplete(false);
+    setError('');
 
     try {
       const response = await fetch("/api/waitlist", {
@@ -47,6 +50,11 @@ const index = () => {
         },
         body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP status ${response.status}`);
+      }
+
       const data = await response.json();
       console.log(data);
       setTimeout(() => {
@@ -56,6 +64,7 @@ const index = () => {
     } catch (error) {
       console.error("Error:", error);
       setIsLoading(false);
+      setError('Failed to submit form. Please try again later.');
     }
   };
 
@@ -66,6 +75,7 @@ const index = () => {
       }, 5000);
     }
   }, [isComplete]);
+
 
   return (
     <>
