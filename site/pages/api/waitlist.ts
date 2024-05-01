@@ -27,8 +27,8 @@ export default async function handler(
       res.status(200).json(entry);
     } catch (error) {
       console.error("Server-side error:", error);
-      //@ts-ignore
-      res.status(500).json({ error: "Failed to add to waitlist", details: error.message });
+     
+      res.status(500).json({ error: "Failed to add to waitlist", details: "failed to add to waitlist" });
     }
   } else {
     res.setHeader('Allow', ['POST']);
